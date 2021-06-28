@@ -6,7 +6,7 @@ DESCRIPTION : This POC consists of two apps namely APP1 and APP2. APP1 is deploy
 
 Keystore generation command : keytool -genkey -alias mule -keyalg RSA -keystore keystore.jks -ext SAN="dns:<provide the url here>\
 Export the certificate : keytool -export -alias mule -file client.cer -keystore keystore.jks&nbsp\
-Generate truststore : keytool -import -v -trustcacerts -alias mule -file client.cer -keystore truststore.ts\
+Generate truststore : keytool -import -v -trustcacerts -alias mule -file client.cer -keystore truststore.ts
   
 URLs: APP1 -> GET http://app1-test.us-e2.cloudhub.io/app1
       APP2 -> GET http://app2-test.us-e2.cloudhub.io/app2
