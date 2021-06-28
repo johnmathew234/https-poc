@@ -6,5 +6,5 @@
 
 Keystore generation command : keytool -genkey -alias mule -keyalg RSA -keystore keystore.jks -ext SAN="dns:<provide the url here>\
 Export the certificate : keytool -export -alias mule -file client.cer -keystore keystore.jks&nbsp\
-Generate truststore : keytool -import -v -trustcacerts -alias mule -file client.cer -keystore truststore.ts\
+Generate truststore : keytool -import -v -trustcacerts -alias mule -file client.cer -keystore truststore.ts
   
