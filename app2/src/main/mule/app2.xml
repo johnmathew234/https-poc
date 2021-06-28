@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6eace345-178e-4453-af3b-0f996688d930" >
+		<http:listener-connection host="0.0.0.0" port="${https.private.port}" protocol="HTTPS" tlsContext="TLS_Context"/>
+	</http:listener-config>
+	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="51171838-e0ed-45c4-938a-854de3f64ce8" >
+		<tls:key-store type="jks" path="cert/keystore.jks" alias="${tls.alias}" keyPassword="${tls.password}" password="${tls.password}" />
+	</tls:context>
+	<configuration-properties doc:name="Configuration properties" doc:id="59f12e22-15b2-4d30-a6e0-3c147d56af5b" file="dev.yaml" />
+	<flow name="app2Flow" doc:id="f0d8ace6-bafb-4cc8-880e-88d1c589c68d" >
+		<http:listener doc:name="Listener" doc:id="beaaa0d6-e79a-4744-a113-ca82efe4e619" config-ref="HTTP_Listener_config" path="/app2"/>
+		<ee:transform doc:name="Transform Message" doc:id="80509b35-e430-4ea9-a9a4-cef424c2ae3f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "successfully tested app2flow"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

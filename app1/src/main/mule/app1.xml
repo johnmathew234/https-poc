@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="96c61a1c-2fa5-4ac6-abb5-8b8fc7d809b1" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="a8038b4d-170a-42bb-9890-4a912bfc7379" file="dev.yaml" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="9f0da3c1-3eec-4f57-a2fa-09011713c569" >
+		<http:request-connection protocol="HTTPS" host="mule-worker-internal-app2-test.us-e2.cloudhub.io" port="8092">
+			<tls:context >
+				<tls:trust-store path="cert/truststore.ts" password="j4rvis-yha" type="jks" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<flow name="app1Flow" doc:id="d429d73d-6119-4e46-82ef-01c0912557b1" >
+		<http:listener doc:name="Listener" doc:id="083ebaba-6297-4279-9871-182b97630a97" config-ref="HTTP_Listener_config" path="/app1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e375d4d9-e0eb-4877-bead-e2fa573a4866" message='#["first application"]'/>
+		<http:request method="GET" doc:name="Request" doc:id="ddd338ee-357d-4170-ae7a-9c1b087edd43" path="/app2" config-ref="HTTP_Request_configuration"/>
+		<ee:transform doc:name="Transform Message" doc:id="0a407a68-2dec-4425-8dd2-61adbee5f0d0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
