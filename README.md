@@ -10,5 +10,5 @@ Export the certificate : keytool -export -alias mule -file client.cer -keystore 
 Generate truststore : keytool -import -v -trustcacerts -alias mule -file client.cer -keystore truststore.ts
   
 URLs: APP1 -> GET http://app1-test.us-e2.cloudhub.io/app1
-      APP2 -> GET http://app2-test.us-e2.cloudhub.io/app2
+      APP2 -> GET https://app2-test.us-e2.cloudhub.io/app2
   
